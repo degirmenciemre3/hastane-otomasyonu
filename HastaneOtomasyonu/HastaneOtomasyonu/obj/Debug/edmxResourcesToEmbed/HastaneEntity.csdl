@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="HastaneOtomasyonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Bolumler">
+    <Key>
+      <PropertyRef Name="BolumID" />
+    </Key>
+    <Property Name="BolumID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BolumIsmi" Type="String" MaxLength="40" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Doktorlar" Relationship="Self.FK_Doktorlar_Bolumler" FromRole="Bolumler" ToRole="Doktorlar" />
+  </EntityType>
+  <EntityType Name="Doktorlar">
+    <Key>
+      <PropertyRef Name="DoktorTC" />
+    </Key>
+    <Property Name="DoktorTC" Type="String" MaxLength="11" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="DoktorAd" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="DoktorSoyad" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="BolumID" Type="Int32" Nullable="false" />
+    <Property Name="DoktorYas" Type="Int32" />
+    <Property Name="DoktorTelefon" Type="String" MaxLength="12" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="Bolumler" Relationship="Self.FK_Doktorlar_Bolumler" FromRole="Doktorlar" ToRole="Bolumler" />
+  </EntityType>
+  <EntityType Name="Hastalar">
+    <Key>
+      <PropertyRef Name="HastaTC" />
+    </Key>
+    <Property Name="HastaTC" Type="String" MaxLength="11" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="HastaAd" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="HastaSoyad" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="HastaYas" Type="Int32" Nullable="false" />
+    <Property Name="HastaCinsiyet" Type="String" MaxLength="6" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="HastaTelefon" Type="String" MaxLength="11" FixedLength="true" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_Doktorlar_Bolumler">
+    <End Role="Bolumler" Type="Self.Bolumler" Multiplicity="1" />
+    <End Role="Doktorlar" Type="Self.Doktorlar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bolumler">
+        <PropertyRef Name="BolumID" />
+      </Principal>
+      <Dependent Role="Doktorlar">
+        <PropertyRef Name="BolumID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="HastaneOtomasyonEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Bolumler" EntityType="Self.Bolumler" />
+    <EntitySet Name="Doktorlar" EntityType="Self.Doktorlar" />
+    <EntitySet Name="Hastalar" EntityType="Self.Hastalar" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <AssociationSet Name="FK_Doktorlar_Bolumler" Association="Self.FK_Doktorlar_Bolumler">
+      <End Role="Bolumler" EntitySet="Bolumler" />
+      <End Role="Doktorlar" EntitySet="Doktorlar" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
